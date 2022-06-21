@@ -12,19 +12,29 @@ body {
   background-color: var(--raisin);
   color: white;
   display: flex;
-  justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100vw;
   font-size: 2em;
   overflow-y: hidden;
   overflow-x: hidden;
 }
 
-.center{
-  width: 1px;
-  height: 1px;
-  border-radius: 50%;
+.universe{
   position: relative;
+  border-radius: 0%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.starSystem{
+  position: absolute;
+  transform-origin: center;
+  width: 100px;
+  height: 100px;
 }
 
 .star{
@@ -33,9 +43,59 @@ body {
   position: absolute;
 }
 
+.rotating{
+  --period: 10s;
+  animation: rotation var(--period) linear infinite;
+}
+
+.reverseAnimation{
+  animation-direction: reverse;
+}
+
+@keyframes rotation {
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
 .star img{
   width: 100%;
 }
 
 
+.counter{
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background-color: var(--yellow);
+  border-radius: 20px;
+  color: var(--raisin);
+  font-family: sans-serif;
+  text-align: center;
+  transition: opacity 1s ease-in ;
+}
+
+.counter button{
+  background-color: var(--grey);
+  border: none;
+  border: 2px solid var(--grey);
+  font-size: 1.5rem;
+  border-radius: 20px 20px 5px 5px;
+  cursor: pointer;
+}
+
+button:active{
+  background-color: var(--yellow);
+}
+
+.reverse{
+  transform: rotate(180deg);
+}
 
