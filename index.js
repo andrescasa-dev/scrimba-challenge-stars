@@ -45,7 +45,7 @@ class App{
     })
 
     this.$lessBtn.addEventListener('click',(e)=>{
-      if(this.starCoefficient > -2) this.starCoefficient--;
+      if(this.starCoefficient > 0) this.starCoefficient--;
       this.loadAllStarSystems();
       this.displayStarsNumber();
     })
@@ -90,7 +90,8 @@ class App{
   }
 
   deleteLastStarSystem(){
-    this.starSystems.pop();
+    const lastStarSystem = this.starSystems.pop();
+    this.starCount -= lastStarSystem.length;
     this.magnitude -= this.ringGap;
     this.$universe.removeChild(this.$universe.lastChild)
   }
