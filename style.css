@@ -43,7 +43,7 @@ body {
   position: absolute;
 }
 
-.rotatings{
+.rotating{
   --period: 10s;
   animation: rotation var(--period) linear infinite;
 }
