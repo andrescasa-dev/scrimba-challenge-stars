@@ -9,7 +9,8 @@ class Star{
     return Math.cos(this.angle * (Math.PI / 180)) * this.magnitude;
   }
   getHtml(){
-    return`<div class="star" style="right: ${this.x + 35}px; bottom: ${this.y + 28}px;">
+    const random = Math.floor(Math.random() * (3 - 1) + 1);
+    return`<div class="star" style="right: ${this.x + 35}px; bottom: ${this.y + 28}px; --scale-duration:${random}s">
             <img src="https://cdn-icons-png.flaticon.com/512/616/616490.png" alt="star">
           </div>`
   }
