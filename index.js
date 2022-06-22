@@ -74,8 +74,9 @@ class App{
 
   displaySystems(systemsList){
     const fragment = new DocumentFragment();
-    systemsList.forEach((starSystem) => {
+    systemsList.forEach((starSystem,i) => {
       const divSystem = document.createElement('div');
+      if( (i % 2) !== 0 ) divSystem.classList.add('reverseAnimation');
       divSystem.classList.add('starSystem', 'rotating')
       //20 y 30
       const randomPeriod = Math.floor(Math.random() * (51 - 20) + 20);
