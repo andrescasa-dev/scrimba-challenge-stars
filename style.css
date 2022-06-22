@@ -1,3 +1,4 @@
+
 :root {
   --pink: #fbe6f4ff;
   --yellow: #fffad1ff;
@@ -38,11 +39,13 @@ body {
 }
 
 .star{
+  transform-origin: center;
   --scale-duration: 10s;
-  width: 30px;
-  height: 30px;
+  width: 15px;
+  height: 15px;
   position: absolute;
   animation: scale var(--scale-duration) ease-in-out infinite;
+  font-size: 1.1rem;
 }
 
 .rotating{
@@ -76,6 +79,7 @@ body {
 }
 
 .star img{
+  margin-top: -10px;
   width: 100%;
 }
 
@@ -99,6 +103,9 @@ body {
 .counter p {
   margin: 0px auto;
   font-size: 0.8em;
+}
+.counter div:last-child{
+  font-size: 0.7em;
 }
 
 .counter button{

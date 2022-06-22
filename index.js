@@ -10,7 +10,7 @@ class Star{
   }
   getHtml(){
     const random = Math.floor(Math.random() * (3 - 1) + 1);
-    return`<div class="star" style="right: ${this.x + 35}px; bottom: ${this.y + 28}px; --scale-duration:${random}s">
+    return`<div class="star" style="right: calc(${this.x}px + 2.4em) ; bottom: calc(${this.y}px + 2.4em) ; --scale-duration:${random}s">
             <img src="https://cdn-icons-png.flaticon.com/512/616/616490.png" alt="star">
           </div>`
   }
@@ -22,54 +22,79 @@ class App{
     this.$counter = document.querySelector('#counter');
     this.$moreBtn = document.querySelector('#more');
     this.$lessBtn = document.querySelector('#less');
-    
-    this.ringsQuantity = 1;
-    //al the numbers has to be multiple of 2
-    this.ringGap = 80;
-    this.initialMagnitude = 80; //also the ring radius+
-    this.magnitude = this.initialMagnitude; 
-    this.starCoefficient = 0;
 
     this.addEventListeners();
-    this.loadUniverse();
+    
+    //al the numbers has to be multiple of 2
+    this.ringGap = 40;
+    this.INITMAGNITUD = 40; //also the ring radius+
+    this.magnitude = this.INITMAGNITUD; 
+    this.starCoefficient = 0;
+    
+    this.starCount = 0;
+    this.starSystems = [];
+    this.loadNewStarSystem();
+    this.displayStarsNumber();
   }
 
   addEventListeners(){
     this.$moreBtn.addEventListener('click',(e)=>{
       this.starCoefficient++;
-      this.loadUniverse();
+      this.loadAllStarSystems();
+      this.displayStarsNumber();
     })
 
     this.$lessBtn.addEventListener('click',(e)=>{
       if(this.starCoefficient > -2) this.starCoefficient--;
-      this.loadUniverse();
+      this.loadAllStarSystems();
+      this.displayStarsNumber();
     })
 
     document.body.addEventListener('keypress',(event)=>{
       if(event.key === 'ArrowRight' || event.key === 'd'){
-        this.ringsQuantity++;
-        this.loadUniverse();
+        this.loadNewStarSystem();
+        this.displayStarsNumber();
       }
       if(event.key === 'ArrowLeft' || event.key === 'a'){
-        if(this.ringsQuantity > 1){
-          this.ringsQuantity--;
-          this.loadUniverse();
+        if(this.starSystems.length > 1){
+          this.deleteLastStarSystem();
+          this.displayStarsNumber();
         } 
       }
     });
   }
 
-  loadUniverse(){
-    this.starSystems = new Array(this.ringsQuantity).fill(0).map(slot =>{
+  loadAllStarSystems(){
+    this.magnitude = this.INITMAGNITUD;
+    this.starCount = 0;
+    this.starSystems = this.starSystems.map(slot =>{
       const distance = 360/((this.magnitude/20) + (2 * this.starCoefficient));
       const newSystem = this.createSystem(distance, this.magnitude)
       this.magnitude += this.ringGap;
       return newSystem
     })
-    this.magnitude = this.initialMagnitude;
-    this.$counter.innerHTML = this.starSystems.reduce((acc, system)=> acc + system.length,0) + " stars"
+    debugger;
     this.displaySystems(this.starSystems);
   }
+
+  displayStarsNumber(){
+    this.$counter.innerHTML = this.starCount + " stars"
+  }
+
+  loadNewStarSystem(){
+    const distance = 360/((this.magnitude/20) + (2 * this.starCoefficient));
+    const newSystem = this.createSystem(distance, this.magnitude)
+    this.starSystems.push(newSystem);
+    this.displaySystem(newSystem);
+    this.magnitude += this.ringGap;
+  }
+
+  deleteLastStarSystem(){
+    this.starSystems.pop();
+    this.magnitude -= this.ringGap;
+    this.$universe.removeChild(this.$universe.lastChild)
+  }
+
   createSystem(distance, magnitude){
     let stars = [];
     let length = 0;
@@ -77,6 +102,7 @@ class App{
       length += distance;
       const newStar = new Star({ angle: length, magnitude})
       stars.push(newStar);
+      this.starCount++;
     }
     return stars;
   }
@@ -87,7 +113,6 @@ class App{
       const divSystem = document.createElement('div');
       if( (i % 2) !== 0 ) divSystem.classList.add('reverseAnimation');
       divSystem.classList.add('starSystem', 'rotating')
-      //20 y 30
       const randomPeriod = Math.floor(Math.random() * (51 - 20) + 20);
       divSystem.style.setProperty('--period', `${randomPeriod}s`);
       divSystem.innerHTML = starSystem.reduce((html, star) => html + star.getHtml() ,'')
@@ -95,6 +120,16 @@ class App{
     });
     this.$universe.innerHTML = '';
     this.$universe.appendChild(fragment)
+  }
+
+  displaySystem(starSystem){
+    const divSystem = document.createElement('div');
+    if( (this.starSystems.length % 2) !== 0 ) divSystem.classList.add('reverseAnimation');
+    divSystem.classList.add('starSystem', 'rotating')
+    const randomPeriod = Math.floor(Math.random() * (51 - 20) + 20);
+    divSystem.style.setProperty('--period', `${randomPeriod}s`);
+    divSystem.innerHTML = starSystem.reduce((html, star) => html + star.getHtml() ,'')
+    this.$universe.appendChild(divSystem)
   }
 }
 new App();
