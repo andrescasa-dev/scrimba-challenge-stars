@@ -96,6 +96,11 @@ body {
   transition: opacity 1s ease-in ;
 }
 
+.counter p {
+  margin: 0px auto;
+  font-size: 0.8em;
+}
+
 .counter button{
   background-color: var(--grey);
   border: none;

@@ -23,36 +23,45 @@ class App{
     this.$moreBtn = document.querySelector('#more');
     this.$lessBtn = document.querySelector('#less');
     
-    this.ringsQuantity = 7;
+    this.ringsQuantity = 1;
     //al the numbers has to be multiple of 2
     this.ringGap = 80;
-    this.initialMagnitude = 40; //also the ring radius+
+    this.initialMagnitude = 80; //also the ring radius+
     this.magnitude = this.initialMagnitude; 
-    this.starCoefficientList = [1/20,1/18,1/16,1/14,1/12,1/10,1/8];
-    this.starCoefficientIndex = 3;
-    this.starCoefficient = this.starCoefficientList[this.starCoefficientIndex]
+    this.starCoefficient = 0;
 
     this.addEventListeners();
     this.loadUniverse();
   }
 
   addEventListeners(){
-    this.$moreBtn.addEventListener('click',()=>{
-      const index = (this.starCoefficientIndex < this.starCoefficientList.length - 1) ? ++this.starCoefficientIndex : this.starCoefficientIndex;
-      this.starCoefficient = this.starCoefficientList[index];
+    this.$moreBtn.addEventListener('click',(e)=>{
+      this.starCoefficient++;
       this.loadUniverse();
     })
 
-    this.$lessBtn.addEventListener('click',()=>{
-      const index = this.starCoefficientIndex > 0 ? --this.starCoefficientIndex : this.starCoefficientIndex;
-      this.starCoefficient = this.starCoefficientList[index]
+    this.$lessBtn.addEventListener('click',(e)=>{
+      if(this.starCoefficient > -2) this.starCoefficient--;
       this.loadUniverse();
     })
+
+    document.body.addEventListener('keypress',(event)=>{
+      if(event.key === 'ArrowRight' || event.key === 'd'){
+        this.ringsQuantity++;
+        this.loadUniverse();
+      }
+      if(event.key === 'ArrowLeft' || event.key === 'a'){
+        if(this.ringsQuantity > 1){
+          this.ringsQuantity--;
+          this.loadUniverse();
+        } 
+      }
+    });
   }
 
   loadUniverse(){
     this.starSystems = new Array(this.ringsQuantity).fill(0).map(slot =>{
-      const distance = Math.round(360 / ( this.magnitude * this.starCoefficient));
+      const distance = 360/((this.magnitude/20) + (2 * this.starCoefficient));
       const newSystem = this.createSystem(distance, this.magnitude)
       this.magnitude += this.ringGap;
       return newSystem
@@ -88,10 +97,4 @@ class App{
     this.$universe.appendChild(fragment)
   }
 }
-
 new App();
-
-
-
-
-
